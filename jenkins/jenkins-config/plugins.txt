@@ -1,0 +1,9 @@
+configuration-as-code
+workflow-aggregator
+workflow-job
+git
+pipeline-stage-view
+docker-workflow
+credentials-binding
+ansicolor
+job-dsl

@@ -1,0 +1,85 @@
+{
+  "consumer": {
+    "name": "order-service"
+  },
+  "provider": {
+    "name": "product-service"
+  },
+  "interactions": [
+    {
+      "description": "a request for product 1",
+      "providerState": "product 1 exists",
+      "request": {
+        "method": "GET",
+        "path": "/products/1"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "id": 1,
+          "name": "Widget",
+          "price": 9.99
+        },
+        "matchingRules": {
+          "$.body.name": {
+            "match": "type"
+          },
+          "$.body.price": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to create a product",
+      "providerState": "a product can be created",
+      "request": {
+        "method": "POST",
+        "path": "/products",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "name": "Gadget",
+          "prices": 19.99
+        },
+        "matchingRules": {
+          "$.body.name": {
+            "match": "type"
+          },
+          "$.body.prices": {
+            "match": "type"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+        },
+        "body": {
+          "id": 2,
+          "name": "Gadget",
+          "prices": 19.99
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.name": {
+            "match": "type"
+          },
+          "$.body.prices": {
+            "match": "type"
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}

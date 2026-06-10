@@ -1,0 +1,67 @@
+jenkins:
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "admin"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: true
+  numExecutors: 4
+
+jobs:
+  - script: |
+      pipelineJob('01-consumer-pact-tests') {
+        definition {
+          cpsScm {
+            scm {
+              gitSCM {
+                userRemoteConfigs {
+                  userRemoteConfig {
+                    url('http://host.docker.internal/pact-poc')
+                  }
+                }
+                branches { branchSpec { name('*/main') } }
+              }
+            }
+            scriptPath('jenkins/pipelines/Jenkinsfile.consumer')
+          }
+        }
+      }
+  - script: |
+      pipelineJob('02-provider-user-verify') {
+        definition {
+          cpsScm {
+            scm {
+              gitSCM {
+                userRemoteConfigs {
+                  userRemoteConfig {
+                    url('http://host.docker.internal/pact-poc')
+                  }
+                }
+                branches { branchSpec { name('*/main') } }
+              }
+            }
+            scriptPath('jenkins/pipelines/Jenkinsfile.provider-user')
+          }
+        }
+      }
+  - script: |
+      pipelineJob('03-provider-product-verify') {
+        definition {
+          cpsScm {
+            scm {
+              gitSCM {
+                userRemoteConfigs {
+                  userRemoteConfig {
+                    url('http://host.docker.internal/pact-poc')
+                  }
+                }
+                branches { branchSpec { name('*/main') } }
+              }
+            }
+            scriptPath('jenkins/pipelines/Jenkinsfile.provider-product')
+          }
+        }
+      }

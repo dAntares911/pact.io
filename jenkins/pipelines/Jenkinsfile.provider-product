@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+    environment {
+        PACT_BROKER_URL   = 'http://pact-broker:9292'
+        PACT_BROKER_USER  = 'admin'
+        PACT_BROKER_PASS  = 'admin'
+        PROVIDER_VERSION  = "${env.BUILD_NUMBER ?: '1.0.0'}"
+        PROVIDER_BASE_URL = 'http://provider-product:5002'
+    }
+    stages {
+        stage('Verify pacts from Broker') {
+            steps {
+                dir('provider-product') {
+                    sh '''
+                        python3 -m venv venv && . venv/bin/activate
+                        pip install -r requirements.txt -q
+                        PACT_BROKER_URL=http://pact-broker:9292 \
+                        PACT_BROKER_USERNAME=admin \
+                        PACT_BROKER_PASSWORD=admin \
+                        PROVIDER_BASE_URL=http://provider-product:5002 \
+                        PROVIDER_VERSION=${BUILD_NUMBER} \
+                        pytest tests/test_provider_verification.py -v -W ignore::PendingDeprecationWarning
+                    '''
+                }
+            }
+        }
+        stage('Can I Deploy?') {
+            steps {
+                sh """
+                    pact-broker can-i-deploy \
+                      --broker-base-url=${PACT_BROKER_URL} \
+                      --broker-username=${PACT_BROKER_USER} \
+                      --broker-password=${PACT_BROKER_PASS} \
+                      --pacticipant product-service \
+                      --version ${PROVIDER_VERSION} \
+                      --to-environment production \
+                      --retry-while-unknown 10 \
+                      --retry-interval 5 || true
+                """
+            }
+        }
+    }
+}

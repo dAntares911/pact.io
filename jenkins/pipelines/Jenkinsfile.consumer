@@ -1,0 +1,60 @@
+pipeline {
+    agent any
+    environment {
+        PACT_BROKER_URL    = 'http://pact-broker:9292'
+        PACT_BROKER_USER   = 'admin'
+        PACT_BROKER_PASS   = 'admin'
+        CONSUMER_VERSION   = "${env.BUILD_NUMBER ?: '1.0.0'}"
+    }
+    stages {
+        stage('Install deps') {
+            steps {
+                dir('consumer') {
+                    sh 'python3 -m venv venv && . venv/bin/activate && pip install -r requirements.txt'
+                }
+            }
+        }
+        stage('Run Pact consumer tests') {
+            steps {
+                dir('consumer') {
+                    sh '. venv/bin/activate && pytest tests/ -v'
+                }
+            }
+        }
+        stage('Publish pacts to Broker') {
+            steps {
+                dir('consumer') {
+                    sh """
+                        pact-broker publish pacts/ \
+                          --broker-base-url=${PACT_BROKER_URL} \
+                          --broker-username=${PACT_BROKER_USER} \
+                          --broker-password=${PACT_BROKER_PASS} \
+                          --consumer-app-version=${CONSUMER_VERSION} \
+                          --tag main
+                    """
+                }
+            }
+        }
+        stage('Can I Deploy?') {
+            steps {
+                sh """
+                    pact-broker can-i-deploy \
+                      --broker-base-url=${PACT_BROKER_URL} \
+                      --broker-username=${PACT_BROKER_USER} \
+                      --broker-password=${PACT_BROKER_PASS} \
+                      --pacticipant order-service \
+                      --version ${CONSUMER_VERSION} \
+                      --to-environment production \
+                      --retry-while-unknown 10 \
+                      --retry-interval 5 \
+                      --ignore-no-pacts-for-provider || true
+                """
+            }
+        }
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: 'consumer/pacts/*.json', allowEmptyArchive: true
+        }
+    }
+}

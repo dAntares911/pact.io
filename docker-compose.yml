@@ -1,0 +1,91 @@
+services:
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: pact
+      POSTGRES_PASSWORD: pact
+      POSTGRES_DB: pact_broker
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pact"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  pact-broker:
+    image: pactfoundation/pact-broker:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "9292:9292"
+    environment:
+      PACT_BROKER_DATABASE_URL: "postgres://pact:pact@postgres/pact_broker"
+      PACT_BROKER_BASIC_AUTH_USERNAME: admin
+      PACT_BROKER_BASIC_AUTH_PASSWORD: admin
+      PACT_BROKER_ALLOW_PUBLIC_READ: "true"
+      PACT_BROKER_PUBLIC_BROKER_HOST: localhost
+      PACT_BROKER_PORT: 9292
+    healthcheck:
+      # pact-broker image has wget, not curl; use 127.0.0.1 (localhost → IPv6 fails)
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:9292/diagnostic/status/heartbeat | grep -q '\"ok\":true'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+
+  provider-user:
+    build: ./provider-user
+    ports:
+      - "5001:5001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
+      interval: 5s
+      retries: 5
+
+  provider-product:
+    build: ./provider-product
+    ports:
+      - "5002:5002"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5002/health"]
+      interval: 5s
+      retries: 5
+
+  consumer:
+    build: ./consumer
+    ports:
+      - "5003:5000"
+    depends_on:
+      provider-user:
+        condition: service_healthy
+      provider-product:
+        condition: service_healthy
+      pact-broker:
+        condition: service_healthy
+    environment:
+      USER_SERVICE_URL: http://provider-user:5001
+      PRODUCT_SERVICE_URL: http://provider-product:5002
+      PACT_BROKER_URL: http://pact-broker:9292
+      PACT_BROKER_USERNAME: admin
+      PACT_BROKER_PASSWORD: admin
+
+  jenkins:
+    build: ./jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    depends_on:
+      pact-broker:
+        condition: service_healthy
+    volumes:
+      - jenkins_data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"
+
+volumes:
+  postgres_data:
+  jenkins_data:

@@ -1,0 +1,49 @@
+# Logfile created on 2026-06-02 10:48:44 -0600 by logger.rb/v1.5.3
+I, [2026-06-02T10:48:44.246182 #53454]  INFO -- : Running example 'Verifying a pact between order-service and user-service Given user 1 exists a request for user 1 with GET /users/1 returns a response which has status code 200'
+I, [2026-06-02T10:48:44.257173 #53454]  INFO -- : Sending GET request to path: "/users/1" with headers: {"X_PACT_PROVIDER_STATES"=>[{"name"=>"user 1 exists"}]}, see debug logs for body
+D, [2026-06-02T10:48:44.257220 #53454] DEBUG -- : body :
+I, [2026-06-02T10:48:44.263777 #53454]  INFO -- : Received response with status: 200, headers: {"Server"=>"Werkzeug/3.1.8 Python/3.11.15", "Date"=>"Tue, 02 Jun 2026 16:48:44 GMT", "Content-Type"=>"application/json", "Content-Length"=>"54", "Connection"=>"close"}, see debug logs for body
+D, [2026-06-02T10:48:44.263811 #53454] DEBUG -- : body: {"email":"john@example.com","id":1,"name":"John Doe"}
+
+I, [2026-06-02T10:54:27.371141 #58036]  INFO -- : Running example 'Verifying a pact between order-service and user-service Given user 1 exists a request for user 1 with GET /users/1 returns a response which has status code 200'
+I, [2026-06-02T10:54:27.382053 #58036]  INFO -- : Sending GET request to path: "/users/1" with headers: {"X_PACT_PROVIDER_STATES"=>[{"name"=>"user 1 exists"}]}, see debug logs for body
+D, [2026-06-02T10:54:27.382094 #58036] DEBUG -- : body :
+I, [2026-06-02T10:54:27.388104 #58036]  INFO -- : Received response with status: 200, headers: {"Server"=>"Werkzeug/3.1.8 Python/3.11.15", "Date"=>"Tue, 02 Jun 2026 16:54:27 GMT", "Content-Type"=>"application/json", "Content-Length"=>"54", "Connection"=>"close"}, see debug logs for body
+D, [2026-06-02T10:54:27.388137 #58036] DEBUG -- : body: {"email":"john@example.com","id":1,"name":"John Doe"}
+
+I, [2026-06-02T10:57:45.481385 #60653]  INFO -- : Running example 'Verifying a pact between order-service and product-service Given product 1 exists a request for product 1 with GET /products/1 returns a response which has status code 200'
+I, [2026-06-02T10:57:45.492393 #60653]  INFO -- : Sending GET request to path: "/products/1" with headers: {"X_PACT_PROVIDER_STATES"=>[{"name"=>"product 1 exists"}]}, see debug logs for body
+D, [2026-06-02T10:57:45.492454 #60653] DEBUG -- : body :
+I, [2026-06-02T10:57:45.501810 #60653]  INFO -- : Received response with status: 200, headers: {"Server"=>"Werkzeug/3.1.8 Python/3.11.15", "Date"=>"Tue, 02 Jun 2026 16:57:45 GMT", "Content-Type"=>"application/json", "Content-Length"=>"38", "Connection"=>"close"}, see debug logs for body
+D, [2026-06-02T10:57:45.501857 #60653] DEBUG -- : body: {"id":1,"name":"Widget","price":9.99}
+
+I, [2026-06-02T10:57:45.502853 #60653]  INFO -- : Running example 'Verifying a pact between order-service and product-service Given a product can be created a request to create a product with POST /products returns a response which has status code 201'
+I, [2026-06-02T10:57:45.513673 #60653]  INFO -- : Sending POST request to path: "/products" with headers: {"CONTENT_TYPE"=>"application/json", "HTTP_X_PACT_ORIGINAL_HEADER_NAMES"=>"Content-Type", "X_PACT_PROVIDER_STATES"=>[{"name"=>"a product can be created"}]}, see debug logs for body
+D, [2026-06-02T10:57:45.513711 #60653] DEBUG -- : body :{"name":"Gadget","price":19.99}
+I, [2026-06-02T10:57:45.515366 #60653]  INFO -- : Received response with status: 201, headers: {"Server"=>"Werkzeug/3.1.8 Python/3.11.15", "Date"=>"Tue, 02 Jun 2026 16:57:45 GMT", "Content-Type"=>"application/json", "Content-Length"=>"39", "Connection"=>"close"}, see debug logs for body
+D, [2026-06-02T10:57:45.515402 #60653] DEBUG -- : body: {"id":3,"name":"Gadget","price":19.99}
+
+I, [2026-06-02T10:58:09.063218 #61042]  INFO -- : Running example 'Verifying a pact between order-service and user-service Given user 1 exists a request for user 1 with GET /users/1 returns a response which has status code 200'
+I, [2026-06-02T10:58:09.074604 #61042]  INFO -- : Sending GET request to path: "/users/1" with headers: {"X_PACT_PROVIDER_STATES"=>[{"name"=>"user 1 exists"}]}, see debug logs for body
+D, [2026-06-02T10:58:09.074655 #61042] DEBUG -- : body :
+I, [2026-06-02T10:58:09.080402 #61042]  INFO -- : Received response with status: 200, headers: {"Server"=>"Werkzeug/3.1.8 Python/3.11.15", "Date"=>"Tue, 02 Jun 2026 16:58:09 GMT", "Content-Type"=>"application/json", "Content-Length"=>"54", "Connection"=>"close"}, see debug logs for body
+D, [2026-06-02T10:58:09.080433 #61042] DEBUG -- : body: {"email":"john@example.com","id":1,"name":"John Doe"}
+
+I, [2026-06-02T11:32:19.879582 #88148]  INFO -- : Running example 'Verifying a pact between order-service and user-service Given user 1 exists a request for user 1 with GET /users/1 returns a response which has status code 200'
+I, [2026-06-02T11:32:19.898018 #88148]  INFO -- : Sending GET request to path: "/users/1" with headers: {"X_PACT_PROVIDER_STATES"=>[{"name"=>"user 1 exists"}]}, see debug logs for body
+D, [2026-06-02T11:32:19.898081 #88148] DEBUG -- : body :
+I, [2026-06-02T11:32:19.904031 #88148]  INFO -- : Received response with status: 200, headers: {"Server"=>"Werkzeug/3.1.8 Python/3.11.15", "Date"=>"Tue, 02 Jun 2026 17:32:19 GMT", "Content-Type"=>"application/json", "Content-Length"=>"54", "Connection"=>"close"}, see debug logs for body
+D, [2026-06-02T11:32:19.904085 #88148] DEBUG -- : body: {"email":"john@example.com","id":1,"name":"John Doe"}
+
+I, [2026-06-02T11:32:23.525978 #88220]  INFO -- : Running example 'Verifying a pact between order-service and product-service Given product 1 exists a request for product 1 with GET /products/1 returns a response which has status code 200'
+I, [2026-06-02T11:32:23.535551 #88220]  INFO -- : Sending GET request to path: "/products/1" with headers: {"X_PACT_PROVIDER_STATES"=>[{"name"=>"product 1 exists"}]}, see debug logs for body
+D, [2026-06-02T11:32:23.535596 #88220] DEBUG -- : body :
+I, [2026-06-02T11:32:23.540451 #88220]  INFO -- : Received response with status: 200, headers: {"Server"=>"Werkzeug/3.1.8 Python/3.11.15", "Date"=>"Tue, 02 Jun 2026 17:32:23 GMT", "Content-Type"=>"application/json", "Content-Length"=>"38", "Connection"=>"close"}, see debug logs for body
+D, [2026-06-02T11:32:23.540493 #88220] DEBUG -- : body: {"id":1,"name":"Widget","price":9.99}
+
+I, [2026-06-02T11:32:23.541289 #88220]  INFO -- : Running example 'Verifying a pact between order-service and product-service Given a product can be created a request to create a product with POST /products returns a response which has status code 201'
+I, [2026-06-02T11:32:23.551889 #88220]  INFO -- : Sending POST request to path: "/products" with headers: {"CONTENT_TYPE"=>"application/json", "HTTP_X_PACT_ORIGINAL_HEADER_NAMES"=>"Content-Type", "X_PACT_PROVIDER_STATES"=>[{"name"=>"a product can be created"}]}, see debug logs for body
+D, [2026-06-02T11:32:23.551929 #88220] DEBUG -- : body :{"name":"Gadget","price":19.99}
+I, [2026-06-02T11:32:23.553366 #88220]  INFO -- : Received response with status: 201, headers: {"Server"=>"Werkzeug/3.1.8 Python/3.11.15", "Date"=>"Tue, 02 Jun 2026 17:32:23 GMT", "Content-Type"=>"application/json", "Content-Length"=>"39", "Connection"=>"close"}, see debug logs for body
+D, [2026-06-02T11:32:23.553392 #88220] DEBUG -- : body: {"id":4,"name":"Gadget","price":19.99}
+
